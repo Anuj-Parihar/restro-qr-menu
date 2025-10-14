@@ -141,8 +141,14 @@
 // }
 
 import React, { useState, useEffect } from "react";
+import Dashboard from "./components/Dashboard";
 
-// NOTE: I am using the placeholder as requested.
+// ✅ Import your category icons
+import StarterImg from "./assets/Starters.png";
+import MainsImg from "./assets/Mains.png";
+import BeverageImg from "./assets/Beverage.png";
+import BarImg from "./assets/Bar.png";
+
 const menuData = {
   "menu": {
     "Salads": [
@@ -473,155 +479,179 @@ const menuData = {
       { "name": "Brownie shake", "price": 299 }
     ],
 
+     // The Alcohol data
     "Alcohol": {
-    "Vodka": [
-      { "name": "Absolute", "price": "490 ( 60 ml ) | ₹ 1375 ( 180 ml ) | ₹ 4620 ( bottle )" },
-      { "name": "Grey goose", "price": "710 ( 60 ml ) | ₹ 1980 ( 180 ml ) | ₹ 7150 ( bottle )" }
-    ],
-    "Gin": [
-      { "name": "Bombay sapphire", "price": "450 ( 60 ml ) | ₹ 1150 ( 180 ml ) | ₹ 4620 ( bottle )" },
-      { "name": "Stranger & Son's", "price": "450 ( 60 ml ) | ₹ 1150 ( 180 ml ) | ₹ 4620 ( bottle )" },
-      { "name": "Samsara", "price": "600 ( 60 ml ) | ₹ 1650 ( 180 ml ) | ₹ 6050 ( bottle )" }
-    ],
-    "Rum": [
-      { "name": "Bacardi white", "price": "299 ( 60 ml ) | ₹ 799 ( 180 ml ) | ₹ 2999 ( bottle )" },
-      { "name": "Old monk", "price": "249 ( 60 ml ) | ₹ 699 ( 180 ml ) | ₹ 2499 ( bottle )" }
-    ],
-    "Tequila": [
-      { "name": "Patron silver", "price": "930 ( 60 ml ) | ₹ 2475 ( 180 ml ) | ₹ 9350 ( bottle )" },
-      { "name": "Camino gold", "price": "550 ( 60 ml ) | ₹ 1480 ( 180 ml ) | ₹ 4950 ( bottle )" },
-      { "name": "Camino silver", "price": "490 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 4620 ( bottle )" }
-    ],
-    "Blended Scotch Whisky": [
-      { "name": "Johnnie Walker Black Label", "price": "650 ( 60 ml ) | ₹ 1870 ( 180 ml ) | ₹ 6820 ( bottle )" },
-      { "name": "Johnnie Walker Red Label", "price": "480 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" },
-      { "name": "Chivas Regal 12yr", "price": "650 ( 60 ml ) | ₹ 1870 ( 180 ml ) | ₹ 6820 ( bottle )" },
-      { "name": "Teacher's 50", "price": "480 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" },
-      { "name": "100 Pipers", "price": "480 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" }
-    ],
-    "Single Malt Whisky": [
-      { "name": "Glenlivet 12yr", "price": "1040 ( 60 ml ) | ₹ 3025 ( 180 ml ) | ₹ 10450 ( bottle )" },
-      { "name": "Indri", "price": "1040 ( 60 ml ) | ₹ 3025 ( 180 ml ) | ₹ 10450 ( bottle )" }
-    ],
-    "World Whisky": [
-      { "name": "Jameson", "price": "490 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" },
-      { "name": "Jim Beam", "price": "490 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" },
-      { "name": "Jack Daniels", "price": "710 ( 60 ml ) | ₹ 1925 ( 180 ml ) | ₹ 7150 ( bottle )" }
-    ],
-    "Red Wine": [
-      { "name": "Jacob’s Creek Shiraz", "price": "649 ( glass ) | ₹ 2999 ( bottle )" },
-      { "name": "Sula Cabernet Shiraz", "price": "499 ( glass ) | ₹ 2299 ( bottle )" },
-      { "name": "Fratelli Shiraz", "price": "499 ( glass ) | ₹ 2299 ( bottle )" }
-    ],
-    "White Wine": [
-      { "name": "Jacob’s Creek Chardonnay", "price": "649 ( glass ) | ₹ 2999 ( bottle )" },
-      { "name": "Sula Sauvignon Blanc", "price": "499 ( glass ) | ₹ 2299 ( bottle )" },
-      { "name": "Fratelli Sauvignon Blanc", "price": "499 ( glass ) | ₹ 2299 ( bottle )" }
-    ],
-    "Liqueurs": [
-      { "name": "Jagermeister", "price": "599 ( 60 ml ) | ₹ 6999 ( bottle )" },
-      { "name": "Baileys", "price": "499 ( 60 ml ) | ₹ 4999 ( bottle )" }
-    ],
-    "Sparkling Wine": [
-      { "name": "Sula Brut", "price": "4999 ( bottle )" },
-      { "name": "Cinzano Prosecco", "price": "4999 ( bottle )" }
-    ],
-    "Beers": [
-      { "name": "Kingfisher Premium", "price": "349 ( 330 ml ) | ₹ 1499 ( bucket )" },
-      { "name": "Kingfisher Ultra", "price": "399 ( 330 ml ) | ₹ 1799 ( bucket )" },
-      { "name": "Budweiser", "price": "399 ( 330 ml ) | ₹ 1799 ( bucket )" },
-      { "name": "Corona", "price": "549 ( 330 ml ) | ₹ 2499 ( bucket )" }
-    ],
-    "Breezers": [
-      { "name": "Cranberry", "price": "299 ( 275 ml ) | ₹ 1299 ( bucket )" },
-      { "name": "Jamaican", "price": "299 ( 275 ml ) | ₹ 1299 ( bucket )" },
-      { "name": "Blueberry", "price": "299 ( 275 ml ) | ₹ 1299 ( bucket )" }
-    ]
-  }
+      "Vodka": [
+        { "name": "Absolute", "price": "₹ 490 ( 60 ml ) | ₹ 1375 ( 180 ml ) | ₹ 4620 ( bottle )" },
+        { "name": "Grey goose", "price": "₹ 710 ( 60 ml ) | ₹ 1980 ( 180 ml ) | ₹ 7150 ( bottle )" }
+      ],
+      "Gin": [
+        { "name": "Bombay sapphire", "price": "₹ 450 ( 60 ml ) | ₹ 1150 ( 180 ml ) | ₹ 4620 ( bottle )" },
+        { "name": "Stranger & Son's", "price": "₹ 450 ( 60 ml ) | ₹ 1150 ( 180 ml ) | ₹ 4620 ( bottle )" },
+        { "name": "Samsara", "price": "₹ 600 ( 60 ml ) | ₹ 1650 ( 180 ml ) | ₹ 6050 ( bottle )" }
+      ],
+      "Rum": [
+        { "name": "Bacardi white", "price": "₹ 299 ( 60 ml ) | ₹ 799 ( 180 ml ) | ₹ 2999 ( bottle )" },
+        { "name": "Old monk", "price": "₹ 249 ( 60 ml ) | ₹ 699 ( 180 ml ) | ₹ 2499 ( bottle )" }
+      ],
+      "Tequila": [
+        { "name": "Patron silver", "price": "₹ 930 ( 60 ml ) | ₹ 2475 ( 180 ml ) | ₹ 9350 ( bottle )" },
+        { "name": "Camino gold", "price": "₹ 550 ( 60 ml ) | ₹ 1480 ( 180 ml ) | ₹ 4950 ( bottle )" },
+        { "name": "Camino silver", "price": "₹ 490 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 4620 ( bottle )" }
+      ],
+      "Blended Scotch Whisky": [
+        { "name": "Johnnie Walker Black Label", "price": "₹ 650 ( 60 ml ) | ₹ 1870 ( 180 ml ) | ₹ 6820 ( bottle )" },
+        { "name": "Johnnie Walker Red Label", "price": "₹ 480 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" },
+        { "name": "Chivas Regal 12yr", "price": "₹ 650 ( 60 ml ) | ₹ 1870 ( 180 ml ) | ₹ 6820 ( bottle )" },
+        { "name": "Teacher's 50", "price": "₹ 480 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" },
+        { "name": "100 Pipers", "price": "₹ 480 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" }
+      ],
+      "Single Malt Whisky": [
+        { "name": "Glenlivet 12yr", "price": "₹ 1040 ( 60 ml ) | ₹ 3025 ( 180 ml ) | ₹ 10450 ( bottle )" },
+        { "name": "Indri", "price": "₹ 1040 ( 60 ml ) | ₹ 3025 ( 180 ml ) | ₹ 10450 ( bottle )" }
+      ],
+      "World Whisky": [
+        { "name": "Jameson", "price": "₹ 490 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" },
+        { "name": "Jim Beam", "price": "₹ 490 ( 60 ml ) | ₹ 1320 ( 180 ml ) | ₹ 5170 ( bottle )" },
+        { "name": "Jack Daniels", "price": "₹ 710 ( 60 ml ) | ₹ 1925 ( 180 ml ) | ₹ 7150 ( bottle )" }
+      ],
+      "Red Wine": [
+        { "name": "Jacob’s Creek Shiraz", "price": "₹ 649 ( glass ) | ₹ 2999 ( bottle )" },
+        { "name": "Sula Cabernet Shiraz", "price": "₹ 499 ( glass ) | ₹ 2299 ( bottle )" },
+        { "name": "Fratelli Shiraz", "price": "₹ 499 ( glass ) | ₹ 2299 ( bottle )" }
+      ],
+      "White Wine": [
+        { "name": "Jacob’s Creek Chardonnay", "price": "₹ 649 ( glass ) | ₹ 2999 ( bottle )" },
+        { "name": "Sula Sauvignon Blanc", "price": "₹ 499 ( glass ) | ₹ 2299 ( bottle )" },
+        { "name": "Fratelli Sauvignon Blanc", "price": "₹ 499 ( glass ) | ₹ 2299 ( bottle )" }
+      ],
+      "Liqueurs": [
+        { "name": "Jagermeister", "price": "₹ 599 ( 60 ml ) | ₹ 6999 ( bottle )" },
+        { "name": "Baileys", "price": "₹ 499 ( 60 ml ) | ₹ 4999 ( bottle )" }
+      ],
+      "Sparkling Wine": [
+        { "name": "Sula Brut", "price": "₹ 4999 ( bottle )" },
+        { "name": "Cinzano Prosecco", "price": "₹ 4999 ( bottle )" }
+      ],
+      "Beers": [
+        { "name": "Kingfisher Premium", "price": "₹ 349 ( 330 ml ) | ₹ 1499 ( bucket )" },
+        { "name": "Kingfisher Ultra", "price": "₹ 399 ( 330 ml ) | ₹ 1799 ( bucket )" },
+        { "name": "Budweiser", "price": "₹ 399 ( 330 ml ) | ₹ 1799 ( bucket )" },
+        { "name": "Corona", "price": "₹ 549 ( 330 ml ) | ₹ 2499 ( bucket )" }
+      ],
+      "Breezers": [
+        { "name": "Cranberry", "price": "₹ 299 ( 275 ml ) | ₹ 1299 ( bucket )" },
+        { "name": "Jamaican", "price": "₹ 299 ( 275 ml ) | ₹ 1299 ( bucket )" },
+        { "name": "Blueberry", "price": "₹ 299 ( 275 ml ) | ₹ 1299 ( bucket )" }
+      ]
+    }
   }
 };
-
-// --- ICONS ---
-function IconRound({ children, active }) {
+// --- ICON WRAPPER ---
+function IconRound({ src, label, active }) {
   return (
     <div
-      className={`p-3 rounded-full shadow-lg w-16 h-16 flex items-center justify-center transition-all duration-300 ease-in-out
-      ${active ? "bg-gold text-white ring-4 ring-gold/40" : "bg-white text-darkGreen hover:bg-beige"}`}
+      className={`p-3 rounded-full shadow-lg w-16 h-16 flex items-center justify-center transition-all duration-300 ease-in-out overflow-hidden
+      ${active ? "bg-gold ring-4 ring-gold/40" : "bg-white hover:bg-beige"}`}
     >
-      {children}
+      <img
+        src={src}
+        alt={label}
+        className={`w-10 h-10 object-contain transition-transform duration-300 ${
+          active ? "scale-110" : "scale-100"
+        }`}
+      />
     </div>
   );
 }
 
-const IconStarters = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 7c0-1.1 0.9-2 2-2h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M6 7c0 3 2 5 6 7 4-2 6-4 6-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-const IconMains = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2v20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M5 7h14M5 17h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-const IconBeverages = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6 3h12l-1 10a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4L6 3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M8 21h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-const IconBar = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M8 2v20M16 2v20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M3 6h18M3 18h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-const IconList = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16M4 17h16M4 12h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-);
-
-
+// --- BADGES ---
 function VegBadge() {
   return (
-    <span className="inline-block w-3 h-3 rounded-full border-2 border-green-700 mr-2 align-middle" aria-hidden />
+    <span
+      className="inline-block w-3 h-3 rounded-full border-2 border-green-700 bg-green-200 mr-2 align-middle flex-shrink-0"
+      aria-hidden
+    />
   );
 }
 function NonVegBadge() {
   return (
-    <span className="inline-block w-3 h-3 rounded-full border-2 border-red-700 mr-2 align-middle" aria-hidden />
+    <span
+      className="inline-block w-3 h-3 rounded-full border-2 border-red-700 bg-red-200 mr-2 align-middle flex-shrink-0"
+      aria-hidden
+    />
   );
 }
 
-// --- MAIN APP ---
-export default function App() {
-  // Mock color definitions for demonstration (assuming you have these in your tailwind.config.js)
-  const colors = {
-    gold: '#A57C00', // Example gold color
-    beige: '#F7F4EB', // Example beige color
-    darkGreen: '#1E392A', // Example dark green color
-    mutedGreen: '#6B7A6C', // Example muted green color
-  };
+// --- ICON ---
+const IconList = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M4 7h16M4 17h16M4 12h16"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+const IconBack = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M15 18L9 12L15 6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
-  const data = menuData;
+// --- MENU COMPONENT ---
+function Menu({ onBack }) {
+  const data = menuData; // assumed global data
   const menuCategories = data.menu;
 
-  // UI state
-  const [currentMain, setCurrentMain] = useState("Starters"); // visible 4 main chips
-  const [expanded, setExpanded] = useState(null); // expanded category
+  const [currentMain, setCurrentMain] = useState("Starters");
+  const [expanded, setExpanded] = useState(null);
 
-  // Build categories mapping
   const allCategories = Object.keys(menuCategories);
 
-  // Define Main Category Buckets
   const startersCategories = [
-    "Salads", "Soups", "Indian Veg Starters", "Indian Nonveg Starters", "Platters",
-    "Chinese Veg Starters", "Chinese Nonveg Starters", "Momos (Steamed)",
-    "Continental Veg Starters", "Continental Nonveg Starters"
+    "Salads",
+    "Soups",
+    "Indian Veg Starters",
+    "Indian Nonveg Starters",
+    "Platters",
+    "Chinese Veg Starters",
+    "Chinese Nonveg Starters",
+    "Momos (Steamed)",
+    "Continental Veg Starters",
+    "Continental Nonveg Starters",
   ];
   const mainsCategories = [
-    "Pasta", "Pizza Veg", "Pizza Nonveg", "Asian Mains", "Indian Veg Main Course",
-    "Indian Nonveg Main Course", "Egg Dishes", "Rice", "Breads", "Sandwiches", "Sushi"
+    "Pasta",
+    "Pizza Veg",
+    "Pizza Nonveg",
+    "Asian Mains",
+    "Indian Veg Main Course",
+    "Indian Nonveg Main Course",
+    "Egg Dishes",
+    "Rice",
+    "Breads",
+    "Sandwiches",
+    "Sushi",
   ];
   const beveragesCategories = ["Coffee", "Mocktails", "Beverages", "Shakes"];
   const barCategories = ["Alcohol", "Special Shots", "Cocktails"];
@@ -633,38 +663,32 @@ export default function App() {
     Bar: allCategories.filter((c) => barCategories.includes(c)),
   };
 
-  // Set a valid initial main category
   useEffect(() => {
     if (!buckets[currentMain] || buckets[currentMain].length === 0) {
       const first = Object.keys(buckets).find((k) => buckets[k].length > 0);
       if (first) setCurrentMain(first);
     }
-  }, [currentMain]); // Add dependency array
+  }, [currentMain]);
 
   const toggleExpand = (cat) => {
     setExpanded((prev) => (prev === cat ? null : cat));
   };
 
-  // 1. Helper function to determine the badge for an item with explicit logic for Starters/Mains
   function getItemBadge(item, category) {
-    const mainCategory = Object.entries(buckets).find(([, cats]) => cats.includes(category))?.[0];
-
-    // Explicitly check for NonVeg first in Starters/Mains context
+    const mainCategory = Object.entries(buckets).find(([, cats]) =>
+      cats.includes(category)
+    )?.[0];
     if (mainCategory === "Starters" || mainCategory === "Mains") {
-      const isNonVeg = (
+      const isNonVeg =
         item.type === "nonveg" ||
         item.options?.includes("Nonveg") ||
         category.toLowerCase().includes("nonveg") ||
         category.toLowerCase().includes("chicken") ||
         category.toLowerCase().includes("mutton") ||
         category.toLowerCase().includes("fish") ||
-        category.toLowerCase().includes("egg") // Egg is considered non-veg in a typical Indian context
-      );
-      if (isNonVeg) {
-        return <NonVegBadge />;
-      }
-      
-      const isVeg = (
+        category.toLowerCase().includes("egg");
+      if (isNonVeg) return <NonVegBadge />;
+      const isVeg =
         item.type === "veg" ||
         item.options?.includes("Veg") ||
         category.toLowerCase().includes("veg") ||
@@ -674,109 +698,74 @@ export default function App() {
         category.toLowerCase().includes("salads") ||
         category.toLowerCase().includes("soups") ||
         category.toLowerCase().includes("breads") ||
-        category.toLowerCase().includes("rice")
-      );
-      if (isVeg) {
-        return <VegBadge />;
-      }
+        category.toLowerCase().includes("rice");
+      if (isVeg) return <VegBadge />;
     }
-    
-    // Default or other categories (Beverages, Bar)
     if (item.type === "veg" || item.options?.includes("Veg")) return <VegBadge />;
-    if (item.type === "nonveg" || item.options?.includes("Nonveg")) return <NonVegBadge />;
-
-    return null; // No badge for Coffee, Alcohol, etc.
+    if (item.type === "nonveg" || item.options?.includes("Nonveg"))
+      return <NonVegBadge />;
+    return null;
   }
-  
-  // Helper function to render price
+
   function renderPrice(price) {
     if (typeof price === "object") {
       return (
         <span className="flex flex-col items-end">
-          {Object.entries(price).map(([k, v], i) => {
+          {Object.entries(price).map(([k, v]) => {
             let badge = null;
             if (k === "veg") badge = <VegBadge />;
             if (k === "nonveg") badge = <NonVegBadge />;
-
-            let formattedValue = v;
-            if (typeof v === 'number') formattedValue = `₹${v}`;
-
             return (
               <span key={k} className="flex items-center text-sm sm:text-base">
                 {badge}
-                <span className="capitalize me-1 font-normal text-mutedGreen">{k}:</span> 
-                <span className="text-gold font-semibold">{formattedValue}</span>
+                <span className="capitalize me-1 font-normal text-mutedGreen">
+                  {k}:
+                </span>
+                <span className="text-gold font-semibold">
+                  {typeof v === "number" ? `₹${v}` : v}
+                </span>
               </span>
             );
           })}
         </span>
       );
     }
-
-    if (typeof price === 'number') return `₹${price}`;
+    if (typeof price === "string") {
+      const pricePoints = price.split(/\s*\|\s*/).filter((p) => p.trim() !== "");
+      return (
+        <div className="flex flex-col items-end text-sm sm:text-base font-semibold text-gold leading-snug">
+          {pricePoints.map((point, index) => (
+            <span key={index} className="flex-shrink-0">
+              {point}
+            </span>
+          ))}
+        </div>
+      );
+    }
+    if (typeof price === "number") return `₹${price}`;
     return price;
   }
 
   function renderCategoryCard(cat) {
     const raw = menuCategories[cat];
-    let totalItems = 0;
+    if (!raw) return null;
 
-    // Category is an object (like Coffee or Alcohol)
-    if (raw && typeof raw === "object" && !Array.isArray(raw)) {
-      const subcats = Object.keys(raw);
-      totalItems = subcats.reduce((sum, sc) => sum + (Array.isArray(raw[sc]) ? raw[sc].length : 0), 0);
+    const totalItems = Array.isArray(raw)
+      ? raw.length
+      : Object.values(raw).reduce(
+          (sum, sub) => sum + (Array.isArray(sub) ? sub.length : 0),
+          0
+        );
 
-      return (
-        <div key={cat} className="bg-white rounded-xl shadow-lg p-4 mb-5 border border-gold/30 transition-shadow hover:shadow-xl">
-          <div className="flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform" onClick={() => toggleExpand(cat)}>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-beige flex items-center justify-center text-darkGreen shadow-inner">
-                <IconList />
-              </div>
-              <div>
-                <div className="text-lg font-bold text-darkGreen">{cat}</div>
-                <div className="text-sm text-mutedGreen">{totalItems} items</div>
-              </div>
-            </div>
-            <div className="text-gold font-bold text-sm tracking-wider">
-              {expanded === cat ? "HIDE" : "VIEW"}
-            </div>
-          </div>
-
-          {expanded === cat && (
-            <div className="mt-4 space-y-4">
-              {subcats.map((sc) => (
-                <div key={sc} className="border-l-4 border-gold/70 ps-3 pl-3">
-                  <div className="text-md font-extrabold text-darkGreen mb-2 mt-2 border-b border-gold/20 pb-1">{sc}</div>
-                  <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
-                    {Array.isArray(raw[sc]) && raw[sc].map((it, idx) => (
-                      <div key={idx} className="bg-beige p-3 rounded-lg flex justify-between items-start border border-beige-light shadow-sm">
-                        <div className="flex-1 min-w-0 pr-2">
-                          <div className="flex items-start">
-                            {getItemBadge(it, sc)}
-                            <div className="font-semibold text-darkGreen leading-tight">{it.name}</div>
-                          </div>
-                          {it.recipe && <div className="text-xs text-mutedGreen mt-1">{it.recipe}</div>}
-                        </div>
-                        <div className="font-semibold whitespace-nowrap text-right ml-2 text-gold">
-                          {renderPrice(it.price)}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      );
-    }
-
-    // Category is an array (list of items)
-    totalItems = raw.length;
     return (
-      <div key={cat} className="bg-white rounded-xl shadow-lg p-4 mb-5 border border-gold/30 transition-shadow hover:shadow-xl">
-        <div className="flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform" onClick={() => toggleExpand(cat)}>
+      <div
+        key={cat}
+        className="bg-white rounded-xl shadow-lg p-4 mb-5 border border-gold/30 transition-shadow hover:shadow-xl"
+      >
+        <div
+          className="flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform"
+          onClick={() => toggleExpand(cat)}
+        >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-lg bg-beige flex items-center justify-center text-darkGreen shadow-inner">
               <IconList />
@@ -792,21 +781,63 @@ export default function App() {
         </div>
 
         {expanded === cat && (
-          <div className="mt-4 grid gap-3 sm:grid-cols-1 md:grid-cols-2">
-            {raw.map((it, idx) => (
-              <div key={idx} className="bg-beige p-3 rounded-lg flex justify-between items-start border border-beige-light shadow-sm">
-                <div className="flex-1 min-w-0 pr-2">
-                  <div className="flex items-start">
-                    {getItemBadge(it, cat)}
-                    <div className="font-semibold text-darkGreen leading-tight">{it.name}</div>
+          <div className="mt-4 space-y-4">
+            {Array.isArray(raw)
+              ? raw.map((it, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-beige p-3 rounded-lg flex justify-between items-start border border-beige-light shadow-sm"
+                  >
+                    <div className="flex-1 min-w-0 pr-2">
+                      <div className="flex items-start">
+                        {getItemBadge(it, cat)}
+                        <div className="font-semibold text-darkGreen leading-tight">
+                          {it.name}
+                        </div>
+                      </div>
+                      {it.recipe && (
+                        <div className="text-xs text-mutedGreen mt-1">
+                          {it.recipe}
+                        </div>
+                      )}
+                    </div>
+                    <div className="font-semibold whitespace-nowrap text-right ml-2 text-gold">
+                      {renderPrice(it.price)}
+                    </div>
                   </div>
-                  {it.recipe && <div className="text-xs text-mutedGreen mt-1">{it.recipe}</div>}
-                </div>
-                <div className="font-semibold whitespace-nowrap text-right ml-2 text-gold">
-                  {renderPrice(it.price)}
-                </div>
-              </div>
-            ))}
+                ))
+              : Object.entries(raw).map(([subcat, items]) => (
+                  <div key={subcat} className="border-l-4 border-gold/70 ps-3">
+                    <div className="text-md font-extrabold text-darkGreen mb-2 mt-2 border-b border-gold/20 pb-1">
+                      {subcat}
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
+                      {items.map((it, idx) => (
+                        <div
+                          key={idx}
+                          className="bg-beige p-3 rounded-lg flex justify-between items-start border border-beige-light shadow-sm"
+                        >
+                          <div className="flex-1 min-w-0 pr-2">
+                            <div className="flex items-start">
+                              {getItemBadge(it, subcat)}
+                              <div className="font-semibold text-darkGreen leading-tight">
+                                {it.name}
+                              </div>
+                            </div>
+                            {it.recipe && (
+                              <div className="text-xs text-mutedGreen mt-1">
+                                {it.recipe}
+                              </div>
+                            )}
+                          </div>
+                          <div className="font-semibold whitespace-nowrap text-right ml-2 text-gold">
+                            {renderPrice(it.price)}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
           </div>
         )}
       </div>
@@ -814,95 +845,152 @@ export default function App() {
   }
 
   return (
-    // Responsive Tailwind classes applied for improved mobile view and structure
     <div className="min-h-screen bg-beige text-darkGreen flex flex-col font-sans">
-      {/* Header */}
       <header className="bg-darkGreen text-beige py-4 px-4 sm:px-6 shadow-xl sticky top-0 z-20">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="text-gold p-2 hover:bg-gold/10 rounded-full transition"
+              >
+                <IconBack />
+              </button>
+            )}
             <div className="w-10 h-10 rounded-full bg-gold flex items-center justify-center text-darkGreen font-bold text-xl">
               C
             </div>
-            <h1 className="text-2xl font-extrabold tracking-widest uppercase">Craveo</h1>
+            <h1 className="text-2xl font-extrabold tracking-widest uppercase">
+              Craveo
+            </h1>
           </div>
-          <div className="hidden sm:block text-sm text-gold">A Taste of Delight</div>
+          <div className="hidden sm:block text-sm text-gold">
+            A Taste of Delight
+          </div>
         </div>
       </header>
 
-      {/* Main content */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 sm:py-8">
-        {/* Top menu categories / Navigation Chips */}
         <section className="mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-darkGreen border-b-2 border-gold/50 pb-2">
             Pick what makes you happy
           </h2>
+
+          {/* ✅ Category Buttons with Images */}
           <div className="flex gap-2 sm:gap-4 justify-between sm:justify-center flex-wrap">
-            <button onClick={() => setCurrentMain("Starters")} className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all">
-              <IconRound active={currentMain === "Starters"}>
-                <IconStarters />
-              </IconRound>
-              <div className={`text-xs sm:text-sm font-bold ${currentMain === "Starters" ? "text-darkGreen" : "text-mutedGreen"}`}>STARTERS</div>
+            <button
+              onClick={() => setCurrentMain("Starters")}
+              className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all"
+            >
+              <IconRound
+                src={StarterImg}
+                label="Starters"
+                active={currentMain === "Starters"}
+              />
+              <div
+                className={`text-xs sm:text-sm font-bold ${
+                  currentMain === "Starters"
+                    ? "text-darkGreen"
+                    : "text-mutedGreen"
+                }`}
+              >
+                STARTERS
+              </div>
             </button>
 
-            <button onClick={() => setCurrentMain("Mains")} className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all">
-              <IconRound active={currentMain === "Mains"}>
-                <IconMains />
-              </IconRound>
-              <div className={`text-xs sm:text-sm font-bold ${currentMain === "Mains" ? "text-darkGreen" : "text-mutedGreen"}`}>MAINS</div>
+            <button
+              onClick={() => setCurrentMain("Mains")}
+              className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all"
+            >
+              <IconRound
+                src={MainsImg}
+                label="Mains"
+                active={currentMain === "Mains"}
+              />
+              <div
+                className={`text-xs sm:text-sm font-bold ${
+                  currentMain === "Mains" ? "text-darkGreen" : "text-mutedGreen"
+                }`}
+              >
+                MAINS
+              </div>
             </button>
 
-            <button onClick={() => setCurrentMain("Beverages")} className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all">
-              <IconRound active={currentMain === "Beverages"}>
-                <IconBeverages />
-              </IconRound>
-              <div className={`text-xs sm:text-sm font-bold ${currentMain === "Beverages" ? "text-darkGreen" : "text-mutedGreen"}`}>BEVERAGES</div>
+            <button
+              onClick={() => setCurrentMain("Beverages")}
+              className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all"
+            >
+              <IconRound
+                src={BeverageImg}
+                label="Beverages"
+                active={currentMain === "Beverages"}
+              />
+              <div
+                className={`text-xs sm:text-sm font-bold ${
+                  currentMain === "Beverages"
+                    ? "text-darkGreen"
+                    : "text-mutedGreen"
+                }`}
+              >
+                BEVERAGES
+              </div>
             </button>
 
-            <button onClick={() => setCurrentMain("Bar")} className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all">
-              <IconRound active={currentMain === "Bar"}>
-                <IconBar />
-              </IconRound>
-              <div className={`text-xs sm:text-sm font-bold ${currentMain === "Bar" ? "text-darkGreen" : "text-mutedGreen"}`}>BAR</div>
+            <button
+              onClick={() => setCurrentMain("Bar")}
+              className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all"
+            >
+              <IconRound
+                src={BarImg}
+                label="Bar"
+                active={currentMain === "Bar"}
+              />
+              <div
+                className={`text-xs sm:text-sm font-bold ${
+                  currentMain === "Bar" ? "text-darkGreen" : "text-mutedGreen"
+                }`}
+              >
+                BAR
+              </div>
             </button>
           </div>
         </section>
 
-        {/* Menu List */}
         <section>
-          <h3 className="text-xl sm:text-2xl font-bold mb-5 text-gold border-b border-mutedGreen pb-2">{currentMain} Categories</h3>
-
+          <h3 className="text-xl sm:text-2xl font-bold mb-5 text-gold border-b border-mutedGreen pb-2">
+            {currentMain} Categories
+          </h3>
           <div>
             {buckets[currentMain] && buckets[currentMain].length > 0 ? (
               buckets[currentMain].map((cat) => renderCategoryCard(cat))
             ) : (
-              <div className="text-mutedGreen text-center py-10 text-lg">No categories found for this selection.</div>
+              <div className="text-mutedGreen text-center py-10 text-lg">
+                No categories found for this selection.
+              </div>
             )}
           </div>
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="bg-darkGreen text-beige text-center py-4 mt-6">
-        <p className="text-sm">© {new Date().getFullYear()} Craveo | Crafted with <span role="img" aria-label="heart">❤️</span></p>
+        <p className="text-sm">
+          © {new Date().getFullYear()} Craveo | Crafted with ❤️
+        </p>
       </footer>
     </div>
   );
 }
 
-// NOTE: To make the styles in this component fully functional, you need to ensure your 
-// Tailwind CSS configuration (`tailwind.config.js`) includes the custom colors used:
-/*
-module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        gold: '#A57C00', // Or your specific gold shade
-        beige: '#F7F4EB', // Or your specific light background shade
-        darkGreen: '#1E392A', // Or your specific main text/header shade
-        mutedGreen: '#6B7A6C', // Or your specific muted/secondary text shade
-      },
-    },
-  },
-  plugins: [],
+// --- PARENT APP COMPONENT ---
+export default function CraveoApp() {
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  return (
+    <div className="font-sans min-h-screen">
+      {isMenuVisible ? (
+        <Menu onBack={() => setIsMenuVisible(false)} />
+      ) : (
+        <Dashboard onViewMenu={() => setIsMenuVisible(true)} />
+      )}
+    </div>
+  );
 }
-*/
