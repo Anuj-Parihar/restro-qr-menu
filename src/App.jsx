@@ -1,154 +1,14 @@
-
-//this below code is perfectly run with back tracking and also perfect reload feature
-
-// import { useState, useEffect } from "react";
-// import Dashboard from "./components/Dashboard";
-// import MenuType from "./components/MenuType";
-// import MenuCategory from "./components/MenuCategory";
-// import MenuItems from "./components/MenuItems";
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
-// import menuData from "./data.json";
-
-// export default function App() {
-//   // ✅ Initialize directly from sessionStorage
-//   const [step, setStep] = useState(() => sessionStorage.getItem("step") || "dashboard");
-//   const [selectedType, setSelectedType] = useState(() => sessionStorage.getItem("selectedType"));
-//   const [selectedCategory, setSelectedCategory] = useState(() => sessionStorage.getItem("selectedCategory"));
-//   const [selectedSubCategory, setSelectedSubCategory] = useState(() => sessionStorage.getItem("selectedSubCategory"));
-
-//   // 💾 Persist session on change
-//   useEffect(() => {
-//     sessionStorage.setItem("step", step);
-//     if (selectedType) sessionStorage.setItem("selectedType", selectedType);
-//     if (selectedCategory) sessionStorage.setItem("selectedCategory", selectedCategory);
-//     if (selectedSubCategory) sessionStorage.setItem("selectedSubCategory", selectedSubCategory);
-//   }, [step, selectedType, selectedCategory, selectedSubCategory]);
-
-//   // 🧭 Handle back button
-//   useEffect(() => {
-//     const handlePopState = () => {
-//       setStep((prev) => {
-//         if (prev === "items" && selectedSubCategory) {
-//           setSelectedSubCategory(null);
-//           return "subcategory";
-//         } else if (prev === "items") {
-//           setSelectedCategory(null);
-//           return "category";
-//         } else if (prev === "subcategory") {
-//           setSelectedCategory(null);
-//           return "category";
-//         } else if (prev === "category") {
-//           setSelectedType(null);
-//           return "menuType";
-//         } else if (prev === "menuType") {
-//           return "dashboard";
-//         } else {
-//           return "dashboard";
-//         }
-//       });
-//     };
-
-//     window.addEventListener("popstate", handlePopState);
-//     return () => window.removeEventListener("popstate", handlePopState);
-//   }, [selectedType, selectedCategory, selectedSubCategory]);
-
-//   // 🔹 Go to a new step and push to browser history
-//   const goToStep = (newStep) => {
-//     window.history.pushState({ step: newStep }, "", "");
-//     setStep(newStep);
-//   };
-
-//   const handleViewMenu = () => goToStep("menuType");
-
-//   const handleSelectType = (type) => {
-//     setSelectedType(type);
-//     setSelectedCategory(null);
-//     setSelectedSubCategory(null);
-//     goToStep("category");
-//   };
-
-//   const handleSelectCategory = (category) => {
-//     const data =
-//       selectedType === "food"
-//         ? menuData.menu[category]
-//         : menuData.menu.Alcohol[category] || menuData.menu[category];
-
-//     if (typeof data === "object" && !Array.isArray(data)) {
-//       setSelectedCategory(category);
-//       setSelectedSubCategory(null);
-//       goToStep("subcategory");
-//     } else {
-//       setSelectedCategory(category);
-//       setSelectedSubCategory(null);
-//       goToStep("items");
-//     }
-//   };
-
-//   const handleSelectSubCategory = (subCat) => {
-//     setSelectedSubCategory(subCat);
-//     goToStep("items");
-//   };
-
-//   // 📦 Content rendering
-//   let content;
-//   if (step === "dashboard") {
-//     content = <Dashboard onViewMenu={handleViewMenu} />;
-//   } else if (step === "menuType") {
-//     content = <MenuType onSelectType={handleSelectType} />;
-//   } else if (step === "category") {
-//     const categories =
-//       selectedType === "food"
-//         ? Object.keys(menuData.menu).filter(
-//             (c) => !["Alcohol", "Coffee"].includes(c)
-//           )
-//         : Object.keys(menuData.menu.Alcohol);
-//     content = (
-//       <MenuCategory
-//         categories={categories}
-//         onSelectCategory={handleSelectCategory}
-//       />
-//     );
-//   } else if (step === "subcategory") {
-//     const subCategories = Object.keys(menuData.menu.Alcohol[selectedCategory]);
-//     content = (
-//       <MenuCategory
-//         categories={subCategories}
-//         onSelectCategory={handleSelectSubCategory}
-//       />
-//     );
-//   } else if (step === "items") {
-//     const data =
-//       selectedSubCategory
-//         ? menuData.menu.Alcohol[selectedCategory][selectedSubCategory]
-//         : menuData.menu[selectedCategory] ||
-//           menuData.menu.Alcohol[selectedCategory];
-//     content = (
-//       <MenuItems
-//         items={data}
-//         title={selectedSubCategory || selectedCategory}
-//       />
-//     );
-//   }
-
-//   return (
-//     <div className="flex flex-col min-h-screen bg-beige text-darkGreen">
-//       <Header />
-//       <main className="flex-grow">{content}</main>
-//       <Footer />
-//     </div>
-//   );
-// }
-
 import React, { useState, useEffect } from "react";
 import Dashboard from "./components/Dashboard";
 
-// ✅ Import your category icons
-import StarterImg from "./assets/Starters.png";
+// --- Import Category Icons ---
+import StartersImg from "./assets/Starters.png";
 import MainsImg from "./assets/Mains.png";
 import BeverageImg from "./assets/Beverage.png";
 import BarImg from "./assets/Bar.png";
 
+// --- MOCK DATA (You already have the real one) ---
+// const menuData = {...};
 const menuData = {
   "menu": {
     "Salads": [
@@ -547,69 +407,132 @@ const menuData = {
     }
   }
 };
-// --- ICON WRAPPER ---
+
+// --- Custom Color Mapping ---
+const COLORS = {
+  darkGreen: "#142d25",
+  mutedGreen: "#607a62",
+  gold: "#b9985c",
+  beige: "#eae0d0",
+};
+
+// --- ICON WRAPPER COMPONENT ---
 function IconRound({ src, label, active }) {
   return (
     <div
-      className={`p-3 rounded-full shadow-lg w-16 h-16 flex items-center justify-center transition-all duration-300 ease-in-out overflow-hidden
-      ${active ? "bg-gold ring-4 ring-gold/40" : "bg-white hover:bg-beige"}`}
+      className={`p-[6px] rounded-full w-16 h-16 flex items-center justify-center transition-all duration-300 ease-in-out overflow-hidden
+      ${
+        active
+          ? "bg-[#142d25] ring-4 ring-[#b9985c]" // Active state: same as before
+          : "bg-[#142d25] border-2 border-[#142d25]" // Inactive: dark background
+      }`}
     >
       <img
         src={src}
         alt={label}
-        className={`w-10 h-10 object-contain transition-transform duration-300 ${
-          active ? "scale-110" : "scale-100"
+        className={`w-10 h-10 object-contain rounded-full transition-transform duration-300 ${
+          active ? "scale-110" : "scale-100 opacity-90"
         }`}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = `https://placehold.co/80x80/cccccc/000000?text=${label.substring(
+            0,
+            1
+          )}`;
+        }}
       />
     </div>
   );
 }
 
-// --- BADGES ---
-function VegBadge() {
+// --- VEG / NON-VEG ICONS ---
+function IconVeg() {
   return (
-    <span
-      className="inline-block w-3 h-3 rounded-full border-2 border-green-700 bg-green-200 mr-2 align-middle flex-shrink-0"
-      aria-hidden
-    />
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="flex-shrink-0 mr-2 mt-1"
+    >
+      <rect
+        x="0.5"
+        y="0.5"
+        width="13"
+        height="13"
+        rx="1"
+        fill="white"
+        stroke="#10B981"
+        strokeWidth="1.5"
+      />
+      <circle cx="7" cy="7" r="3.5" fill="#10B981" />
+    </svg>
   );
 }
-function NonVegBadge() {
+function IconNonVeg() {
   return (
-    <span
-      className="inline-block w-3 h-3 rounded-full border-2 border-red-700 bg-red-200 mr-2 align-middle flex-shrink-0"
-      aria-hidden
-    />
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="flex-shrink-0 mr-2 mt-1"
+    >
+      <path
+        d="M7 1L1 13H13L7 1Z"
+        fill="#EF4444"
+        stroke="#EF4444"
+        strokeWidth="1.5"
+      />
+      <circle cx="7" cy="8.5" r="2" fill="white" />
+    </svg>
   );
 }
+const VegBadge = () => <IconVeg />;
+const NonVegBadge = () => <IconNonVeg />;
 
-// --- ICON ---
+// --- GENERIC ICONS ---
 const IconList = () => (
   <svg
     width="22"
     height="22"
     viewBox="0 0 24 24"
     fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
   >
-    <path
-      d="M4 7h16M4 17h16M4 12h16"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-    />
+    <path d="M4 7h16M4 17h16M4 12h16" />
   </svg>
 );
 const IconBack = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M15 18L9 12L15 6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+const IconChevronDown = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M6 9L12 15L18 9"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+const IconChevronUp = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M18 15L12 9L6 15"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -620,8 +543,8 @@ const IconBack = () => (
 
 // --- MENU COMPONENT ---
 function Menu({ onBack }) {
-  const data = menuData; // assumed global data
-  const menuCategories = data.menu;
+  const data = menuData;
+  const menuCategories = data.menu || {};
 
   const [currentMain, setCurrentMain] = useState("Starters");
   const [expanded, setExpanded] = useState(null);
@@ -668,42 +591,32 @@ function Menu({ onBack }) {
       const first = Object.keys(buckets).find((k) => buckets[k].length > 0);
       if (first) setCurrentMain(first);
     }
-  }, [currentMain]);
+  }, [currentMain, buckets]);
 
-  const toggleExpand = (cat) => {
-    setExpanded((prev) => (prev === cat ? null : cat));
-  };
+  const toggleExpand = (cat) => setExpanded((prev) => (prev === cat ? null : cat));
 
   function getItemBadge(item, category) {
     const mainCategory = Object.entries(buckets).find(([, cats]) =>
       cats.includes(category)
     )?.[0];
+    const text = category.toLowerCase();
+    const nonVegHints = ["nonveg", "chicken", "mutton", "fish", "egg"];
+    const vegHints = [
+      "veg",
+      "paneer",
+      "mushroom",
+      "broccoli",
+      "salads",
+      "soups",
+      "breads",
+      "rice",
+    ];
     if (mainCategory === "Starters" || mainCategory === "Mains") {
-      const isNonVeg =
-        item.type === "nonveg" ||
-        item.options?.includes("Nonveg") ||
-        category.toLowerCase().includes("nonveg") ||
-        category.toLowerCase().includes("chicken") ||
-        category.toLowerCase().includes("mutton") ||
-        category.toLowerCase().includes("fish") ||
-        category.toLowerCase().includes("egg");
-      if (isNonVeg) return <NonVegBadge />;
-      const isVeg =
-        item.type === "veg" ||
-        item.options?.includes("Veg") ||
-        category.toLowerCase().includes("veg") ||
-        category.toLowerCase().includes("paneer") ||
-        category.toLowerCase().includes("mushroom") ||
-        category.toLowerCase().includes("broccoli") ||
-        category.toLowerCase().includes("salads") ||
-        category.toLowerCase().includes("soups") ||
-        category.toLowerCase().includes("breads") ||
-        category.toLowerCase().includes("rice");
-      if (isVeg) return <VegBadge />;
+      if (nonVegHints.some((x) => text.includes(x))) return <NonVegBadge />;
+      if (vegHints.some((x) => text.includes(x))) return <VegBadge />;
     }
-    if (item.type === "veg" || item.options?.includes("Veg")) return <VegBadge />;
-    if (item.type === "nonveg" || item.options?.includes("Nonveg"))
-      return <NonVegBadge />;
+    if (item.type === "veg") return <VegBadge />;
+    if (item.type === "nonveg") return <NonVegBadge />;
     return null;
   }
 
@@ -712,16 +625,15 @@ function Menu({ onBack }) {
       return (
         <span className="flex flex-col items-end">
           {Object.entries(price).map(([k, v]) => {
-            let badge = null;
-            if (k === "veg") badge = <VegBadge />;
-            if (k === "nonveg") badge = <NonVegBadge />;
+            let badge =
+              k === "veg" ? <VegBadge /> : k === "nonveg" ? <NonVegBadge /> : null;
             return (
               <span key={k} className="flex items-center text-sm sm:text-base">
                 {badge}
-                <span className="capitalize me-1 font-normal text-mutedGreen">
+                <span className="capitalize me-1 font-normal text-[#607a62]">
                   {k}:
                 </span>
-                <span className="text-gold font-semibold">
+                <span className="text-[#b9985c] font-semibold">
                   {typeof v === "number" ? `₹${v}` : v}
                 </span>
               </span>
@@ -730,26 +642,21 @@ function Menu({ onBack }) {
         </span>
       );
     }
-    if (typeof price === "string") {
-      const pricePoints = price.split(/\s*\|\s*/).filter((p) => p.trim() !== "");
+    if (typeof price === "number") return `₹${price}`;
+    if (typeof price === "string")
       return (
-        <div className="flex flex-col items-end text-sm sm:text-base font-semibold text-gold leading-snug">
-          {pricePoints.map((point, index) => (
-            <span key={index} className="flex-shrink-0">
-              {point}
-            </span>
+        <div className="flex flex-col items-end text-sm sm:text-base font-semibold text-[#b9985c] leading-snug">
+          {price.split(/\s*\|\s*/).map((p, i) => (
+            <span key={i}>{p}</span>
           ))}
         </div>
       );
-    }
-    if (typeof price === "number") return `₹${price}`;
     return price;
   }
 
   function renderCategoryCard(cat) {
     const raw = menuCategories[cat];
     if (!raw) return null;
-
     const totalItems = Array.isArray(raw)
       ? raw.length
       : Object.values(raw).reduce(
@@ -760,77 +667,79 @@ function Menu({ onBack }) {
     return (
       <div
         key={cat}
-        className="bg-white rounded-xl shadow-lg p-4 mb-5 border border-gold/30 transition-shadow hover:shadow-xl"
+        className="bg-white rounded-xl shadow-md mb-2 border-b border-gray-100/80"
       >
         <div
-          className="flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform"
+          className="flex items-center justify-between cursor-pointer p-4"
           onClick={() => toggleExpand(cat)}
         >
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-beige flex items-center justify-center text-darkGreen shadow-inner">
+            <div className="w-12 h-12 rounded-full bg-[#142d25] flex items-center justify-center text-[#eae0d0] shadow-lg">
               <IconList />
             </div>
             <div>
-              <div className="text-lg font-bold text-darkGreen">{cat}</div>
-              <div className="text-sm text-mutedGreen">{totalItems} items</div>
+              <div className="text-lg font-semibold text-[#142d25] uppercase">
+                {cat}
+              </div>
+              <div className="text-sm text-[#607a62]">{totalItems} items</div>
             </div>
           </div>
-          <div className="text-gold font-bold text-sm tracking-wider">
-            {expanded === cat ? "HIDE" : "VIEW"}
+          <div className="text-[#142d25]">
+            {expanded === cat ? <IconChevronUp /> : <IconChevronDown />}
           </div>
         </div>
 
         {expanded === cat && (
-          <div className="mt-4 space-y-4">
+          <div className="mt-2 space-y-1 pt-2 px-4 pb-4 border-t border-gray-100">
             {Array.isArray(raw)
               ? raw.map((it, idx) => (
                   <div
                     key={idx}
-                    className="bg-beige p-3 rounded-lg flex justify-between items-start border border-beige-light shadow-sm"
+                    className="bg-white py-3 flex justify-between items-start border-b border-gray-100 last:border-b-0"
                   >
                     <div className="flex-1 min-w-0 pr-2">
                       <div className="flex items-start">
                         {getItemBadge(it, cat)}
-                        <div className="font-semibold text-darkGreen leading-tight">
+                        <div className="font-semibold text-[#142d25] leading-tight pt-[2px]">
                           {it.name}
                         </div>
                       </div>
                       {it.recipe && (
-                        <div className="text-xs text-mutedGreen mt-1">
+                        <div className="text-xs text-[#607a62] mt-1 ml-[22px]">
                           {it.recipe}
                         </div>
                       )}
                     </div>
-                    <div className="font-semibold whitespace-nowrap text-right ml-2 text-gold">
+                    <div className="font-semibold whitespace-nowrap text-right ml-2 text-[#b9985c]">
                       {renderPrice(it.price)}
                     </div>
                   </div>
                 ))
               : Object.entries(raw).map(([subcat, items]) => (
-                  <div key={subcat} className="border-l-4 border-gold/70 ps-3">
-                    <div className="text-md font-extrabold text-darkGreen mb-2 mt-2 border-b border-gold/20 pb-1">
+                  <div key={subcat} className="mb-4">
+                    <div className="text-md font-extrabold text-[#142d25] mb-2 mt-2 border-b border-gray-200 pb-1 uppercase">
                       {subcat}
                     </div>
                     <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
                       {items.map((it, idx) => (
                         <div
                           key={idx}
-                          className="bg-beige p-3 rounded-lg flex justify-between items-start border border-beige-light shadow-sm"
+                          className="bg-white p-3 flex justify-between items-start border border-gray-100 rounded-lg hover:shadow-sm transition"
                         >
                           <div className="flex-1 min-w-0 pr-2">
                             <div className="flex items-start">
                               {getItemBadge(it, subcat)}
-                              <div className="font-semibold text-darkGreen leading-tight">
+                              <div className="font-semibold text-[#142d25] leading-tight pt-[2px]">
                                 {it.name}
                               </div>
                             </div>
                             {it.recipe && (
-                              <div className="text-xs text-mutedGreen mt-1">
+                              <div className="text-xs text-[#607a62] mt-1 ml-[22px]">
                                 {it.recipe}
                               </div>
                             )}
                           </div>
-                          <div className="font-semibold whitespace-nowrap text-right ml-2 text-gold">
+                          <div className="font-semibold whitespace-nowrap text-right ml-2 text-[#b9985c]">
                             {renderPrice(it.price)}
                           </div>
                         </div>
@@ -845,126 +754,80 @@ function Menu({ onBack }) {
   }
 
   return (
-    <div className="min-h-screen bg-beige text-darkGreen flex flex-col font-sans">
-      <header className="bg-darkGreen text-beige py-4 px-4 sm:px-6 shadow-xl sticky top-0 z-20">
+    <div className="min-h-screen bg-white text-[#142d25] flex flex-col font-sans">
+      {/* HEADER */}
+      <header className="bg-[#142d25] text-[#eae0d0] py-4 px-4 sm:px-6 shadow-xl sticky top-0 z-20">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             {onBack && (
               <button
                 onClick={onBack}
-                className="text-gold p-2 hover:bg-gold/10 rounded-full transition"
+                className="text-[#b9985c] p-2 hover:bg-[#b9985c]/10 rounded-full transition"
               >
                 <IconBack />
               </button>
             )}
-            <div className="w-10 h-10 rounded-full bg-gold flex items-center justify-center text-darkGreen font-bold text-xl">
+            <div className="w-10 h-10 rounded-full bg-[#b9985c] flex items-center justify-center text-[#142d25] font-bold text-xl">
               C
             </div>
             <h1 className="text-2xl font-extrabold tracking-widest uppercase">
               Craveo
             </h1>
           </div>
-          <div className="hidden sm:block text-sm text-gold">
+          <div className="hidden sm:block text-sm text-[#b9985c]">
             A Taste of Delight
           </div>
         </div>
       </header>
 
+      {/* MAIN CONTENT */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 sm:py-8">
         <section className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-darkGreen border-b-2 border-gold/50 pb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-[#142d25] pb-2">
             Pick what makes you happy
           </h2>
 
-          {/* ✅ Category Buttons with Images */}
-          <div className="flex gap-2 sm:gap-4 justify-between sm:justify-center flex-wrap">
-            <button
-              onClick={() => setCurrentMain("Starters")}
-              className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all"
-            >
-              <IconRound
-                src={StarterImg}
-                label="Starters"
-                active={currentMain === "Starters"}
-              />
-              <div
-                className={`text-xs sm:text-sm font-bold ${
-                  currentMain === "Starters"
-                    ? "text-darkGreen"
-                    : "text-mutedGreen"
-                }`}
-              >
-                STARTERS
-              </div>
-            </button>
-
-            <button
-              onClick={() => setCurrentMain("Mains")}
-              className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all"
-            >
-              <IconRound
-                src={MainsImg}
-                label="Mains"
-                active={currentMain === "Mains"}
-              />
-              <div
-                className={`text-xs sm:text-sm font-bold ${
-                  currentMain === "Mains" ? "text-darkGreen" : "text-mutedGreen"
-                }`}
-              >
-                MAINS
-              </div>
-            </button>
-
-            <button
-              onClick={() => setCurrentMain("Beverages")}
-              className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all"
-            >
-              <IconRound
-                src={BeverageImg}
-                label="Beverages"
-                active={currentMain === "Beverages"}
-              />
-              <div
-                className={`text-xs sm:text-sm font-bold ${
-                  currentMain === "Beverages"
-                    ? "text-darkGreen"
-                    : "text-mutedGreen"
-                }`}
-              >
-                BEVERAGES
-              </div>
-            </button>
-
-            <button
-              onClick={() => setCurrentMain("Bar")}
-              className="flex flex-col items-center gap-2 focus:outline-none p-1 sm:p-2 transition-all"
-            >
-              <IconRound
-                src={BarImg}
-                label="Bar"
-                active={currentMain === "Bar"}
-              />
-              <div
-                className={`text-xs sm:text-sm font-bold ${
-                  currentMain === "Bar" ? "text-darkGreen" : "text-mutedGreen"
-                }`}
-              >
-                BAR
-              </div>
-            </button>
+          {/* CATEGORY BUTTONS */}
+          <div className="flex gap-2 sm:gap-4 justify-between sm:justify-center flex-wrap border-b-2 border-[#b9985c]/50 pb-4 mb-6">
+            {[
+              { key: "Starters", img: StartersImg },
+              { key: "Mains", img: MainsImg },
+              { key: "Beverages", img: BeverageImg },
+              { key: "Bar", img: BarImg },
+            ].map(({ key, img }) => {
+              const isActive = currentMain === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => setCurrentMain(key)}
+                  className="flex flex-col items-center gap-2 p-1 sm:p-2"
+                >
+                  <IconRound src={img} label={key} active={isActive} />
+                  <div
+                    className={`text-xs sm:text-sm font-bold transition ${
+                      isActive
+                        ? "text-[#142d25] border-b-2 border-[#b9985c] pb-[2px]"
+                        : "text-[#b9985c]"
+                    }`}
+                  >
+                    {key.toUpperCase()}
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </section>
 
+        {/* MENU LIST */}
         <section>
-          <h3 className="text-xl sm:text-2xl font-bold mb-5 text-gold border-b border-mutedGreen pb-2">
-            {currentMain} Categories
+          <h3 className="text-xl sm:text-2xl font-bold mb-5 text-[#142d25]">
+            Menu
           </h3>
-          <div>
+          <div className="space-y-4">
             {buckets[currentMain] && buckets[currentMain].length > 0 ? (
               buckets[currentMain].map((cat) => renderCategoryCard(cat))
             ) : (
-              <div className="text-mutedGreen text-center py-10 text-lg">
+              <div className="text-[#607a62] text-center py-10 text-lg">
                 No categories found for this selection.
               </div>
             )}
@@ -972,7 +835,7 @@ function Menu({ onBack }) {
         </section>
       </main>
 
-      <footer className="bg-darkGreen text-beige text-center py-4 mt-6">
+      <footer className="bg-[#142d25] text-[#eae0d0] text-center py-4 mt-6">
         <p className="text-sm">
           © {new Date().getFullYear()} Craveo | Crafted with ❤️
         </p>
@@ -981,7 +844,7 @@ function Menu({ onBack }) {
   );
 }
 
-// --- PARENT APP COMPONENT ---
+// --- ROOT APP ---
 export default function CraveoApp() {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   return (
