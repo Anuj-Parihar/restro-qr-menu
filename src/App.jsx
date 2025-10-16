@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Dashboard from "./components/Dashboard";
 
 // --- Import Category Icons ---
@@ -7,8 +7,6 @@ import MainsImg from "./assets/Mains.png";
 import BeverageImg from "./assets/Beverage.png";
 import BarImg from "./assets/Bar.png";
 
-// --- MOCK DATA (You already have the real one) ---
-// const menuData = {...};
 const menuData = {
   "menu": {
     "Salads": [
@@ -407,7 +405,6 @@ const menuData = {
     }
   }
 };
-
 // --- Custom Color Mapping ---
 const COLORS = {
   darkGreen: "#142d25",
@@ -423,8 +420,8 @@ function IconRound({ src, label, active }) {
       className={`p-[6px] rounded-full w-16 h-16 flex items-center justify-center transition-all duration-300 ease-in-out overflow-hidden
       ${
         active
-          ? "bg-[#142d25] ring-4 ring-[#b9985c]" // Active state: same as before
-          : "bg-[#142d25] border-2 border-[#142d25]" // Inactive: dark background
+          ? "bg-[#142d25] ring-4 ring-[#b9985c]"
+          : "bg-[#142d25] border-2 border-[#142d25]"
       }`}
     >
       <img
@@ -540,6 +537,22 @@ const IconChevronUp = () => (
     />
   </svg>
 );
+const IconSearch = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="text-gray-500"
+  >
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+);
 
 // --- MENU COMPONENT ---
 function Menu({ onBack }) {
@@ -548,6 +561,7 @@ function Menu({ onBack }) {
 
   const [currentMain, setCurrentMain] = useState("Starters");
   const [expanded, setExpanded] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const allCategories = Object.keys(menuCategories);
 
@@ -579,21 +593,24 @@ function Menu({ onBack }) {
   const beveragesCategories = ["Coffee", "Mocktails", "Beverages", "Shakes"];
   const barCategories = ["Alcohol", "Special Shots", "Cocktails"];
 
-  const buckets = {
-    Starters: allCategories.filter((c) => startersCategories.includes(c)),
-    Mains: allCategories.filter((c) => mainsCategories.includes(c)),
-    Beverages: allCategories.filter((c) => beveragesCategories.includes(c)),
-    Bar: allCategories.filter((c) => barCategories.includes(c)),
-  };
+  const buckets = useMemo(
+    () => ({
+      Starters: allCategories.filter((c) => startersCategories.includes(c)),
+      Mains: allCategories.filter((c) => mainsCategories.includes(c)),
+      Beverages: allCategories.filter((c) => beveragesCategories.includes(c)),
+      Bar: allCategories.filter((c) => barCategories.includes(c)),
+    }),
+    [allCategories]
+  );
 
+  // ✅ FIXED LOGIC: only collapse when search term or currentMain changes
   useEffect(() => {
-    if (!buckets[currentMain] || buckets[currentMain].length === 0) {
-      const first = Object.keys(buckets).find((k) => buckets[k].length > 0);
-      if (first) setCurrentMain(first);
-    }
-  }, [currentMain, buckets]);
+    setExpanded(null);
+  }, [searchTerm, currentMain]);
 
-  const toggleExpand = (cat) => setExpanded((prev) => (prev === cat ? null : cat));
+  const toggleExpand = (cat) => {
+    setExpanded((prev) => (prev === cat ? null : cat));
+  };
 
   function getItemBadge(item, category) {
     const mainCategory = Object.entries(buckets).find(([, cats]) =>
@@ -691,6 +708,7 @@ function Menu({ onBack }) {
 
         {expanded === cat && (
           <div className="mt-2 space-y-1 pt-2 px-4 pb-4 border-t border-gray-100">
+            {/* Items rendering logic unchanged */}
             {Array.isArray(raw)
               ? raw.map((it, idx) => (
                   <div
@@ -753,10 +771,52 @@ function Menu({ onBack }) {
     );
   }
 
+  // --- SEARCH FILTER LOGIC ---
+  const getFilteredCategories = useMemo(() => {
+    const term = searchTerm.toLowerCase().trim();
+    if (!term) {
+      return buckets[currentMain] || [];
+    }
+
+    const matchedCategories = allCategories.filter((cat) => {
+      const categoryData = menuCategories[cat];
+      const categoryName = cat.toLowerCase();
+
+      if (categoryName.includes(term)) return true;
+
+      if (!Array.isArray(categoryData)) {
+        if (
+          Object.keys(categoryData).some((subCat) =>
+            subCat.toLowerCase().includes(term)
+          )
+        ) {
+          return true;
+        }
+      }
+
+      const allItems = Array.isArray(categoryData)
+        ? categoryData
+        : Object.values(categoryData).flat();
+
+      return allItems.some((item) => {
+        const itemName = item.name ? item.name.toLowerCase() : "";
+        const itemRecipe = item.recipe ? item.recipe.toLowerCase() : "";
+        return itemName.includes(term) || itemRecipe.includes(term);
+      });
+    });
+
+    return matchedCategories;
+  }, [searchTerm, currentMain, allCategories, menuCategories, buckets]);
+
+  const categoriesToRender = searchTerm
+    ? getFilteredCategories
+    : buckets[currentMain] || [];
+
   return (
     <div className="min-h-screen bg-white text-[#142d25] flex flex-col font-sans">
-      {/* HEADER */}
-      <header className="bg-[#142d25] text-[#eae0d0] py-4 px-4 sm:px-6 shadow-xl sticky top-0 z-20">
+
+      {/* Header */}
+      <header className="bg-[#142d25] text-[#eae0d0] py-4 px-4 sm:px-6 shadow-xl z-20">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             {onBack && (
@@ -779,56 +839,71 @@ function Menu({ onBack }) {
           </div>
         </div>
       </header>
-
-      {/* MAIN CONTENT */}
-      <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 sm:py-8">
-        <section className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-[#142d25] pb-2">
-            Pick what makes you happy
-          </h2>
-
-          {/* CATEGORY BUTTONS */}
-          <div className="flex gap-2 sm:gap-4 justify-between sm:justify-center flex-wrap border-b-2 border-[#b9985c]/50 pb-4 mb-6">
-            {[
-              { key: "Starters", img: StartersImg },
-              { key: "Mains", img: MainsImg },
-              { key: "Beverages", img: BeverageImg },
-              { key: "Bar", img: BarImg },
-            ].map(({ key, img }) => {
-              const isActive = currentMain === key;
-              return (
-                <button
-                  key={key}
-                  onClick={() => setCurrentMain(key)}
-                  className="flex flex-col items-center gap-2 p-1 sm:p-2"
-                >
-                  <IconRound src={img} label={key} active={isActive} />
-                  <div
-                    className={`text-xs sm:text-sm font-bold transition ${
-                      isActive
-                        ? "text-[#142d25] border-b-2 border-[#b9985c] pb-[2px]"
-                        : "text-[#b9985c]"
-                    }`}
-                  >
-                    {key.toUpperCase()}
-                  </div>
-                </button>
-              );
-            })}
+      
+      {/* Search Bar */}
+      <div className="w-full bg-white pt-4 pb-2 px-4 sm:px-6 shadow-md z-30 sticky top-0">
+        <div className="max-w-4xl mx-auto">
+          <div className="relative flex items-center bg-gray-100 rounded-lg p-2 border border-gray-200">
+            <IconSearch />
+            <input
+              type="text"
+              placeholder="Search for item"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-transparent text-lg text-[#142d25] placeholder-[#607a62] font-medium outline-none ml-2"
+            />
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* MENU LIST */}
+      {/* Main */}
+      <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 sm:py-8">
+        {!searchTerm && (
+          <section className="mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-[#142d25] pb-2">
+              Pick what makes you happy
+            </h2>
+            <div className="flex gap-2 sm:gap-4 justify-between sm:justify-center flex-wrap border-b-2 border-[#b9985c]/50 pb-4 mb-6">
+              {[
+                { key: "Starters", img: StartersImg },
+                { key: "Mains", img: MainsImg },
+                { key: "Beverages", img: BeverageImg },
+                { key: "Bar", img: BarImg },
+              ].map(({ key, img }) => {
+                const isActive = currentMain === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setCurrentMain(key)}
+                    className="flex flex-col items-center gap-2 p-1 sm:p-2"
+                  >
+                    <IconRound src={img} label={key} active={isActive} />
+                    <div
+                      className={`text-xs sm:text-sm font-bold transition ${
+                        isActive
+                          ? "text-[#142d25] border-b-2 border-[#b9985c] pb-[2px]"
+                          : "text-[#b9985c]"
+                      }`}
+                    >
+                      {key.toUpperCase()}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         <section>
           <h3 className="text-xl sm:text-2xl font-bold mb-5 text-[#142d25]">
-            Menu
+            {searchTerm ? `Search Results for "${searchTerm}"` : "Menu"}
           </h3>
           <div className="space-y-4">
-            {buckets[currentMain] && buckets[currentMain].length > 0 ? (
-              buckets[currentMain].map((cat) => renderCategoryCard(cat))
+            {categoriesToRender.length > 0 ? (
+              categoriesToRender.map((cat) => renderCategoryCard(cat))
             ) : (
               <div className="text-[#607a62] text-center py-10 text-lg">
-                No categories found for this selection.
+                No items or categories found. Try a different search term or selection.
               </div>
             )}
           </div>
@@ -847,6 +922,11 @@ function Menu({ onBack }) {
 // --- ROOT APP ---
 export default function CraveoApp() {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  useEffect(() => {
+    setIsMenuVisible(true);
+  }, []);
+
   return (
     <div className="font-sans min-h-screen">
       {isMenuVisible ? (
