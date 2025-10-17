@@ -1,12 +1,3 @@
-import React, { useState, useEffect, useMemo } from "react";
-import Dashboard from "./components/Dashboard";
-
-// --- Import Category Icons ---
-import StartersImg from "./assets/Starters.png";
-import MainsImg from "./assets/Mains.png";
-import BeverageImg from "./assets/Beverage.png";
-import BarImg from "./assets/Bar.png";
-
 const menuData = {
   "menu": {
     "Salads": [
@@ -405,6 +396,29 @@ const menuData = {
     }
   }
 };
+import React, { useState, useEffect, useMemo } from "react";
+import Dashboard from "./components/Dashboard";
+import Carousel from "./components/Carousel";
+// --- Import Category Icons ---
+import StartersImg from "./assets/Starters.png";
+import MainsImg from "./assets/Mains.png";
+import BeverageImg from "./assets/Beverage.png";
+import BarImg from "./assets/Bar.png";
+import Carousel1 from "./assets/carousel1.jpg";
+import Carousel2 from "./assets/carousel2.jpg";
+import Carousel3 from "./assets/carousel3.jpg";
+import Carousel4 from "./assets/carousel4.jpg";
+import Carousel5 from "./assets/carousel5.jpg";
+import Carousel6 from "./assets/carousel6.jpg";
+import Carousel7 from "./assets/carousel7.jpg";
+import Carousel8 from "./assets/carousel8.jpg";
+import Carousel9 from "./assets/carousel9.jpg";
+import Carousel10 from "./assets/carousel10.jpg";
+import Carousel11 from "./assets/carousel11.jpg";
+import Carousel12 from "./assets/carousel12.jpg";
+import Carousel13 from "./assets/carousel13.jpg";
+import logo from "./assets/Small-logo-01.png";
+
 // --- Custom Color Mapping ---
 const COLORS = {
   darkGreen: "#142d25",
@@ -553,6 +567,10 @@ const IconSearch = () => (
     <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
 );
+
+
+ // --- Carousel images ---
+  const carouselImages = [Carousel1, Carousel2, Carousel3, Carousel4,Carousel5,Carousel6,Carousel7,Carousel8,Carousel9,Carousel10,Carousel11,Carousel12,Carousel13];
 
 // --- MENU COMPONENT ---
 function Menu({ onBack }) {
@@ -816,29 +834,48 @@ function Menu({ onBack }) {
     <div className="min-h-screen bg-white text-[#142d25] flex flex-col font-sans">
 
       {/* Header */}
-      <header className="bg-[#142d25] text-[#eae0d0] py-4 px-4 sm:px-6 shadow-xl z-20">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {onBack && (
-              <button
-                onClick={onBack}
-                className="text-[#b9985c] p-2 hover:bg-[#b9985c]/10 rounded-full transition"
-              >
-                <IconBack />
-              </button>
-            )}
-            <div className="w-10 h-10 rounded-full bg-[#b9985c] flex items-center justify-center text-[#142d25] font-bold text-xl">
-              C
-            </div>
-            <h1 className="text-2xl font-extrabold tracking-widest uppercase">
-              Craveo
+      <header className="bg-[#142d25] text-[#eae0d0] py-1 px-1 sm:px-8 shadow-xl z-20 w-full">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          
+          {/* Left: Logo + Title */}
+          <div className="flex items-center gap-3 sm:gap-5">
+            <img
+              src={logo}
+              alt="Craveo Kitchen & Bar Logo"
+              className="w-20 h-20 sm:w-22 sm:h-22 object-contain  p-1"
+            />
+            <h1 className="text-lg sm:text-2xl md:text-3xl font-bold tracking-wide leading-tight">
+              Craveo Kitchen & Bar
             </h1>
           </div>
-          <div className="hidden sm:block text-sm text-[#b9985c]">
-            A Taste of Delight
-          </div>
+
+          {/* Right: Close ("X") button */}
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="text-[#b9985c] hover:text-[#eae0d0] p-2 sm:p-3 rounded-full transition"
+              aria-label="Close Menu"
+            >
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="block"
+              >
+                <line x1="21" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="21" />
+              </svg>
+            </button>
+          )}
         </div>
       </header>
+
+
       
       {/* Search Bar */}
       <div className="w-full bg-white pt-4 pb-2 px-4 sm:px-6 shadow-md z-30 sticky top-0">
@@ -855,6 +892,14 @@ function Menu({ onBack }) {
           </div>
         </div>
       </div>
+            
+      
+             {/* 🌟 Carousel Section */}
+      <div className="mt-4 px-4 sm:px-6">
+        <Carousel images={carouselImages} />
+      </div>
+
+
 
       {/* Main */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 sm:py-8">
@@ -909,12 +954,6 @@ function Menu({ onBack }) {
           </div>
         </section>
       </main>
-
-      <footer className="bg-[#142d25] text-[#eae0d0] text-center py-4 mt-6">
-        <p className="text-sm">
-          © {new Date().getFullYear()} Craveo | Crafted with ❤️
-        </p>
-      </footer>
     </div>
   );
 }
@@ -924,7 +963,7 @@ export default function CraveoApp() {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   useEffect(() => {
-    setIsMenuVisible(true);
+    setIsMenuVisible(false);
   }, []);
 
   return (

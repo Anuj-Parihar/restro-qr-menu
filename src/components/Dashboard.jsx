@@ -78,7 +78,7 @@ export default function Dashboard({ onViewMenu }) {
         <img
           src={logo}
           alt="Restaurant Logo"
-          className="w-40 sm:w-52 md:w-60 object-contain mb-6 drop-shadow-lg animate-float"
+          className="w-60 sm:w-52 md:w-60 object-contain drop-shadow-lg animate-float"
         />
         <h2 className="text-3xl sm:text-4xl font-extrabold mb-3 text-darkGreen tracking-wide">
           Welcome to <span className="text-gold">Craveo</span>
