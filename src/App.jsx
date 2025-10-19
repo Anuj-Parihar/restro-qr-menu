@@ -904,17 +904,18 @@ function Menu({ onBack }) {
   onClick={() => toggleExpand(cat)}
 >
   <div className="flex items-start sm:items-center gap-4">
-    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#142d25] flex items-center justify-center text-[#eae0d0] shadow-lg mt-[2px]">
       {iconSrc ? (
+    <div className="flex-shrink-0 w-15 h-15 rounded-full bg-[#142d25] flex items-center justify-center text-[#eae0d0] shadow-lg mt-[2px]">
         <img
           src={iconSrc}
           alt={cat}
           className="w-10 h-10 object-contain"
         />
-      ) : (
-        <IconList />
-      )}
     </div>
+      ) : (
+        // <IconList />
+        ""
+      )}
     <div className="flex flex-col justify-center">
       <div className="text-lg font-semibold text-[#142d25] uppercase leading-snug">
         {cat}
