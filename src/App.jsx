@@ -627,7 +627,7 @@ const COLORS = {
 function IconRound({ src, label, active }) {
   return (
     <div
-      className={`rounded-full w-14 h-14 sm:w-24 sm:h-24 flex items-center justify-center transition-all duration-300 ease-in-out
+      className={`rounded-full w-14 h-14 sm:w-24 cursor-pointer sm:h-24 flex items-center justify-center transition-all duration-300 ease-in-out
       ${active ? "bg-[#142d25] ring-4 ring-[#b9985c]" : "bg-[#142d25] border-2 border-[#142d25]"}`}
     >
       <img
@@ -1061,7 +1061,7 @@ function Menu({ onBack }) {
           strokeWidth="2.2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="block"
+          className="block cursor-pointer"
         >
           <line x1="21" y1="6" x2="6" y2="18" />
           <line x1="6" y1="6" x2="18" y2="21" />

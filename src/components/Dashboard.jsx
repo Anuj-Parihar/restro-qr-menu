@@ -94,7 +94,7 @@ export default function Dashboard({ onViewMenu }) {
         onClick={onViewMenu}
         className="bg-gold text-darkGreen px-10 py-3.5 rounded-full font-semibold text-lg 
         shadow-md hover:shadow-xl transition-all duration-300 ease-out
-        hover:bg-darkGreen hover:text-beige active:scale-95 animate-fadeInUp delay-150 z-10"
+        hover:bg-darkGreen hover:text-beige active:scale-95 animate-fadeInUp cursor-pointer delay-150 z-10"
       >
         View Menu
       </button>
