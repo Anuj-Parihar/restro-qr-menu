@@ -1,3 +1,47 @@
+import React, { useState, useEffect, useMemo } from "react";
+import Dashboard from "./components/Dashboard";
+import Carousel from "./components/Carousel";
+// --- Import Category Icons ---
+import StartersImg from "./assets/Starters.png";
+import MainsImg from "./assets/Mains.png";
+import BeverageImg from "./assets/Beverage.png";
+import BarImg from "./assets/Bar.png";
+import Carousel1 from "./assets/carousel1.jpg";
+import Carousel2 from "./assets/carousel2.jpg";
+import Carousel3 from "./assets/carousel3.jpg";
+import Carousel4 from "./assets/carousel4.jpg";
+import Carousel5 from "./assets/carousel5.jpg";
+import Carousel6 from "./assets/carousel6.jpg";
+import Carousel7 from "./assets/carousel7.jpg";
+import Carousel8 from "./assets/carousel8.jpg";
+import Carousel9 from "./assets/carousel9.jpg";
+import Carousel10 from "./assets/carousel10.jpg";
+import Carousel11 from "./assets/carousel11.jpg";
+import Carousel12 from "./assets/carousel12.jpg";
+import Carousel13 from "./assets/carousel13.jpg";
+import logo from "./assets/Small-logo-01.png";
+
+import Salads from "./assets/salad.png";
+import Soups from "./assets/soup.png";
+import ChineseStarters from "./assets/chinese-starters.png";
+import Egg from "./assets/egg.png";
+import Sandwhich from "./assets/sandwhich.png";
+import NonVegStarters from "./assets/non-veg-starters.png";
+import NonVegPizza from "./assets/non-veg-pizza.png";
+import NonVegMainCourse from "./assets/non-veg-main-course.png";
+import Pasta from "./assets/pasta.png";
+import Momos from "./assets/momos.png";
+import IndianVegStarters from "./assets/indian-veg-starters.png";
+import ContinentalsStarters from "./assets/continentals-starters.png";
+import Breads from "./assets/breads.png";
+import AsianMains from "./assets/asian-mains.png";
+import Sushi from "./assets/sushi.png";
+import VegPizza from "./assets/veg-pizza.png";
+import Platter from "./assets/platter.png";
+import VegMains from "./assets/veg-mains.png";
+import Rice from "./assets/rice.png";
+
+
 const menuData = {
   menu: {
     Salads: [
@@ -547,48 +591,6 @@ const menuData = {
     },
   },
 };
-import React, { useState, useEffect, useMemo } from "react";
-import Dashboard from "./components/Dashboard";
-import Carousel from "./components/Carousel";
-// --- Import Category Icons ---
-import StartersImg from "./assets/Starters.png";
-import MainsImg from "./assets/Mains.png";
-import BeverageImg from "./assets/Beverage.png";
-import BarImg from "./assets/Bar.png";
-import Carousel1 from "./assets/carousel1.jpg";
-import Carousel2 from "./assets/carousel2.jpg";
-import Carousel3 from "./assets/carousel3.jpg";
-import Carousel4 from "./assets/carousel4.jpg";
-import Carousel5 from "./assets/carousel5.jpg";
-import Carousel6 from "./assets/carousel6.jpg";
-import Carousel7 from "./assets/carousel7.jpg";
-import Carousel8 from "./assets/carousel8.jpg";
-import Carousel9 from "./assets/carousel9.jpg";
-import Carousel10 from "./assets/carousel10.jpg";
-import Carousel11 from "./assets/carousel11.jpg";
-import Carousel12 from "./assets/carousel12.jpg";
-import Carousel13 from "./assets/carousel13.jpg";
-import logo from "./assets/Small-logo-01.png";
-
-import Salads from "./assets/salad.png";
-import Soups from "./assets/soup.png";
-import ChineseStarters from "./assets/chinese-starters.png";
-import Egg from "./assets/egg.png";
-import Sandwhich from "./assets/sandwhich.png";
-import NonVegStarters from "./assets/non-veg-starters.png";
-import NonVegPizza from "./assets/non-veg-pizza.png";
-import NonVegMainCourse from "./assets/non-veg-main-course.png";
-import Pasta from "./assets/pasta.png";
-import Momos from "./assets/momos.png";
-import IndianVegStarters from "./assets/indian-veg-starters.png";
-import ContinentalsStarters from "./assets/continentals-starters.png";
-import Breads from "./assets/breads.png";
-import AsianMains from "./assets/asian-mains.png";
-import Sushi from "./assets/sushi.png";
-import VegPizza from "./assets/veg-pizza.png";
-import Platter from "./assets/platter.png";
-import VegMains from "./assets/veg-mains.png";
-import Rice from "./assets/rice.png";
 
 // --- ICON MAPPING ---
 const categoryIcons = {
