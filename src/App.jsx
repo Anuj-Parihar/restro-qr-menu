@@ -31,7 +31,6 @@ import NonVegPizza from "./assets/non-veg-pizza.png";
 import NonVegMainCourse from "./assets/non-veg-main-course.png";
 import Pasta from "./assets/pasta.png";
 import Momos from "./assets/momos.png";
-// import IndianVegStarters from "./assets/indian-veg-starters.png";
 import IndianVegStarters from "./assets/indian-veg-starters.png";
 import ContinentalsStarters from "./assets/continentals-starters.png";
 import Breads from "./assets/breads.png";
@@ -41,7 +40,6 @@ import VegPizza from "./assets/veg-pizza.png";
 import Platter from "./assets/platter.png";
 import VegMains from "./assets/veg-mains.png";
 import Rice from "./assets/rice.png";
-
 
 const menuData = {
   menu: {
@@ -631,21 +629,29 @@ function IconRound({ src, label, active }) {
   return (
     <div
       className={`rounded-full w-14 h-14 sm:w-24 cursor-pointer sm:h-24 flex items-center justify-center transition-all duration-300 ease-in-out
-      ${active ? "bg-[#142d25] ring-4 ring-[#b9985c]" : "bg-[#142d25] border-2 border-[#142d25]"}`}
+      ${
+        active
+          ? "bg-[#142d25] ring-4 ring-[#b9985c]"
+          : "bg-[#142d25] border-2 border-[#142d25]"
+      }`}
     >
       <img
         src={src}
         alt={label}
-        className={`max-w-[70%] max-h-[70%] object-contain transition-transform duration-300 ${active ? "scale-110" : "scale-100 opacity-90"}`}
+        className={`max-w-[70%] max-h-[70%] object-contain transition-transform duration-300 ${
+          active ? "scale-110" : "scale-100 opacity-90"
+        }`}
         onError={(e) => {
           e.target.onerror = null;
-          e.target.src = `https://placehold.co/80x80/cccccc/000000?text=${label.substring(0, 1)}`;
+          e.target.src = `https://placehold.co/80x80/cccccc/000000?text=${label.substring(
+            0,
+            1
+          )}`;
         }}
       />
     </div>
   );
 }
-
 
 // --- VEG / NON-VEG ICONS ---
 function IconVeg() {
@@ -903,34 +909,33 @@ function Menu({ onBack }) {
         className="bg-white rounded-xl shadow-md mb-2 border-b border-gray-100/80"
       >
         <div
-  className="flex items-start sm:items-center justify-between cursor-pointer p-4"
-  onClick={() => toggleExpand(cat)}
->
-  <div className="flex items-start sm:items-center gap-4">
-      {iconSrc ? (
-    <div className="flex-shrink-0 w-15 h-15 rounded-full bg-[#142d25] flex items-center justify-center text-[#eae0d0] shadow-lg mt-[2px]">
-        <img
-          src={iconSrc}
-          alt={cat}
-          className="w-10 h-10 object-contain"
-        />
-    </div>
-      ) : (
-        // <IconList />
-        ""
-      )}
-    <div className="flex flex-col justify-center">
-      <div className="text-lg font-semibold text-[#142d25] uppercase leading-snug">
-        {cat}
-      </div>
-      <div className="text-sm text-[#607a62]">{totalItems} items</div>
-    </div>
-  </div>
-  <div className="text-[#142d25] mt-1 sm:mt-0">
-    {expanded === cat ? <IconChevronUp /> : <IconChevronDown />}
-  </div>
-</div>
-
+          className="flex items-start sm:items-center justify-between cursor-pointer p-4"
+          onClick={() => toggleExpand(cat)}
+        >
+          <div className="flex items-start sm:items-center gap-4">
+            {iconSrc ? (
+              <div className="flex-shrink-0 w-15 h-15 rounded-full bg-[#142d25] flex items-center justify-center text-[#eae0d0] shadow-lg mt-[2px]">
+                <img
+                  src={iconSrc}
+                  alt={cat}
+                  className="w-10 h-10 object-contain"
+                />
+              </div>
+            ) : (
+              // <IconList />
+              ""
+            )}
+            <div className="flex flex-col justify-center">
+              <div className="text-lg font-semibold text-[#142d25] uppercase leading-snug">
+                {cat}
+              </div>
+              <div className="text-sm text-[#607a62]">{totalItems} items</div>
+            </div>
+          </div>
+          <div className="text-[#142d25] mt-1 sm:mt-0">
+            {expanded === cat ? <IconChevronUp /> : <IconChevronDown />}
+          </div>
+        </div>
 
         {expanded === cat && (
           <div className="mt-2 space-y-1 pt-2 px-4 pb-4 border-t border-gray-100">
@@ -1035,45 +1040,44 @@ function Menu({ onBack }) {
     <div className="min-h-screen bg-white text-[#142d25] flex flex-col font-sans">
       {/* Header */}
       <header className="bg-[#142d25] text-[#eae0d0] py-1 px-1 sm:px-8 shadow-xl z-20 w-full">
-  <div className="max-w-6xl mx-auto flex items-center justify-between">
-    {/* Left: Logo + Text */}
-    <div className="flex items-center  sm:gap-5 flex-1">
-      <img
-        src={logo}
-        alt="Craveo Kitchen & Bar Logo"
-        className="w-20 h-20 sm:w-22 sm:h-22 object-contain p-1"
-      />
-      <h1 className="text-lg sm:text-2xl md:text-3xl font-bold tracking-wide leading-tight flex-1 text-center">
-        Craveo Kitchen & Bar
-      </h1>
-    </div>
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          {/* Left: Logo + Text */}
+          <div className="flex items-center  sm:gap-5 flex-1">
+            <img
+              src={logo}
+              alt="Craveo Kitchen & Bar Logo"
+              className="w-20 h-20 sm:w-22 sm:h-22 object-contain p-1"
+            />
+            <h1 className="text-lg sm:text-2xl md:text-3xl font-bold tracking-wide leading-tight flex-1 text-center">
+              Craveo Kitchen & Bar
+            </h1>
+          </div>
 
-    {/* Right: Back button */}
-    {onBack && (
-      <button
-        onClick={onBack}
-        className="text-[#b9985c] hover:text-[#eae0d0] p-2 sm:p-3 rounded-full transition"
-        aria-label="Close Menu"
-      >
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="block cursor-pointer"
-        >
-          <line x1="21" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="21" />
-        </svg>
-      </button>
-    )}
-  </div>
-</header>
-
+          {/* Right: Back button */}
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="text-[#b9985c] hover:text-[#eae0d0] p-2 sm:p-3 rounded-full transition"
+              aria-label="Close Menu"
+            >
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="block cursor-pointer"
+              >
+                <line x1="21" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="21" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </header>
 
       {/* Search Bar */}
       <div className="w-full bg-white pt-4 pb-2 px-4 sm:px-6 shadow-md z-30 sticky top-0">
