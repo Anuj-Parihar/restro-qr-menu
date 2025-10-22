@@ -31,7 +31,7 @@ import NonVegPizza from "./assets/non-veg-pizza.png";
 import NonVegMainCourse from "./assets/non-veg-main-course.png";
 import Pasta from "./assets/pasta.png";
 import Momos from "./assets/momos.png";
-import IndianVegStarters from "./assets/indian-veg-starters.png";
+import IndianVegStarters from "/assets/indian-veg-starters.png";
 import ContinentalsStarters from "./assets/continentals-starters.png";
 import Breads from "./assets/breads.png";
 import AsianMains from "./assets/asian-mains.png";
